@@ -4,14 +4,20 @@
 #include <random>
 #include <cmath>
 
-#define TARGET_VALUE 35
+#define TARGET_VALUE 100
 
-int random(int min, int max)
+int random(int min, int max, bool minus = false)
 {
 	std::mt19937 rng;
 	rng.seed(std::random_device()());
 	std::uniform_int_distribution<std::mt19937::result_type> dist(min, max);
-	return dist(rng);
+	int result = dist(rng);
+
+	if (minus && random(0, 100) > 50)
+	{
+		return -result;
+	}
+	return result;
 }
 
 class Genome
@@ -29,7 +35,7 @@ public:
 		{
 			sum += value;
 		}
-		_fitness = abs(TARGET_VALUE - (sum));
+		_fitness = TARGET_VALUE - (sum);
 	}
 	Genome(Genome& other)
 		: _datas(other._datas)
@@ -47,7 +53,7 @@ public:
 		int rangeValue = 0;
 		if (mutentRange < 3)
 		{
-			rangeValue = random(0, 4);
+			rangeValue = random(0, 4, true);
 		}
 
 		Genome* result(this);
@@ -82,16 +88,24 @@ public:
 
 std::vector<Genome*> initGenomes()
 {
-	constexpr int dataField[] = { 1, 5, 6, 8, 3, 7, 3, 5, 9, 0 };
 	std::vector<Genome*> result;
 	for (int i = 0; i < 10; ++i)
 	{
 		result.push_back(new Genome(
 		{ 
-			dataField[random(0, 9)], 
-			dataField[random(0, 9)],
-			dataField[random(0, 9)],
-			dataField[random(0, 9)] 
+			random(0, 9, true), 
+			random(0, 9, true),
+			random(0, 9, true),
+			random(0, 9, true),
+			random(0, 9, true),
+			random(0, 9, true),
+			random(0, 9, true),
+			random(0, 9, true),
+			random(0, 9, true),
+			random(0, 9, true),
+			random(0, 9, true),
+			random(0, 9, true),
+			random(0, 9, true) 
 		}));
 	}
 	return result;
