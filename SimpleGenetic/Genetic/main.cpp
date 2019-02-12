@@ -4,7 +4,7 @@
 #include <random>
 #include <cmath>
 
-#define TARGET_VALUE 100
+#define TARGET_VALUE 123
 
 int random(int min, int max, bool minus = false)
 {
